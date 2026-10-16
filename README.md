@@ -6,6 +6,8 @@ loop checks one neighbour: an empty side curves back around the pulli
 Stack the pieces and they weave into one rice-flour pattern. Every move
 plays a note from Raga Mohanam.
 
+**Play it: https://kolam-tetris.vercel.app**
+
 | Folder | What it is |
 | --- | --- |
 | [`site/`](site) | The game. Static files, no build step. This is what deploys. |
@@ -16,9 +18,9 @@ plays a note from Raga Mohanam.
 Import the repo and set **Root Directory** to `site`, framework preset
 **Other**, no build command. Or from a checkout: `cd site && npx vercel --prod`.
 
-After the first deploy, replace `YOUR-DOMAIN` in `site/index.html` (the
-`og:image` and `twitter:image` tags) with the deployed domain and redeploy,
-so link previews on X show `og-card.png`.
+Link previews (Open Graph and X card tags in `site/index.html`) point at
+`https://kolam-tetris.vercel.app`. If the domain changes, update the
+`canonical`, `og:url`, `og:image` and `twitter:image` URLs to match.
 
 ## Controls
 
