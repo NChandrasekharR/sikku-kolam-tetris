@@ -1,0 +1,20 @@
+import { buildTimeline } from "../src/game/timeline";
+const seed = Number(process.argv[2]); const endAfter = Number(process.argv[3]);
+const t0 = Date.now();
+const tl = buildTimeline(seed, endAfter);
+console.log("build ms", Date.now() - t0, "totalFrames", tl.totalFrames, (tl.totalFrames / 60).toFixed(2) + "s", "gameEnd", tl.gameEnd);
+const counts: Record<string, number> = {};
+tl.sounds.forEach((s) => (counts[s.kind] = (counts[s.kind] ?? 0) + 1));
+console.log(counts, "particles", tl.particles.length);
+const snaps = tl.run.snapshots;
+const ids = new Set(snaps.filter((s) => s.piece).map((s) => s.piece!.groupId));
+console.log("pieces", ids.size, "clears", tl.run.clears);
+const last = snaps[snaps.length - 1];
+console.log("final score", last.score, "lines", last.lines, "level", last.level, "hold", last.holdType);
+const show = (k: number) => {
+  const s = snaps[k];
+  console.log(`--- frame ${k} (${(k / 60).toFixed(1)}s) state=${s.state}`);
+  console.log(s.grid.map((r) => r.map((c) => (c ? c.type : ".")).join("")).slice(8).join("\n"));
+};
+for (const c of tl.run.clears) show(c.frame);
+show(snaps.length - 1);
