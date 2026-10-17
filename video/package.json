@@ -34,7 +34,9 @@
     "seeds": "tsx scripts/search-seeds.ts",
     "render": "npm run audio && remotion render KolamTetris out/kolam-tetris.mp4 --codec=h264 --crf=16 --jpeg-quality=95 --audio-bitrate=256k",
     "diagram": "remotion still WeaveDiagram out/weave-diagram.png",
-    "card": "remotion still OgCard out/og-card@2x.png"
+    "card": "remotion still OgCard out/og-card@2x.png",
+    "share-audio": "tsx scripts/render-share-audio.ts",
+    "share": "npm run share-audio && remotion render ShareStory out/share-story.mp4 --codec=h264 --crf=16 --jpeg-quality=95 --audio-bitrate=256k"
   },
   "allowScripts": {
     "esbuild": false

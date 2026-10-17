@@ -2,6 +2,8 @@ import { Composition, Still } from "remotion";
 import { KolamTetris, timeline } from "./KolamTetris";
 import { OgCard } from "./OgCard";
 import { WeaveDiagram } from "./WeaveDiagram";
+import { DURATION } from "./share/beats";
+import { ShareStory } from "./share/ShareStory";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -10,6 +12,14 @@ export const RemotionRoot: React.FC = () => {
         id="KolamTetris"
         component={KolamTetris}
         durationInFrames={timeline.totalFrames}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="ShareStory"
+        component={ShareStory}
+        durationInFrames={DURATION}
         fps={60}
         width={1080}
         height={1920}

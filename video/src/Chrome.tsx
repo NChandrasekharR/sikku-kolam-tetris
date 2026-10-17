@@ -180,7 +180,132 @@ const MiniLabel: React.FC<{ x: number; children: string }> = ({ x, children }) =
   </div>
 );
 
-const StartOverlay: React.FC<{ frame: number }> = ({ frame }) => {
+// #overlay: the centred card used for Start / Pause / Game Over
+const OverlayCard: React.FC<{ opacity: number; children: React.ReactNode }> = ({ opacity, children }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: 71,
+      top: 269.98,
+      width: 290,
+      height: 300,
+      boxSizing: "border-box",
+      padding: 24,
+      borderRadius: 12,
+      border: `1px solid ${cream(0.2)}`,
+      background: "rgba(74, 18, 25, 0.8)",
+      backdropFilter: "blur(4px)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      textAlign: "center",
+      opacity,
+    }}
+  >
+    {children}
+  </div>
+);
+
+const OverlayHeading: React.FC<{ subtitle: string }> = ({ subtitle }) => (
+  <>
+    <p
+      style={{
+        margin: "0 0 6px",
+        fontSize: 10,
+        lineHeight: "15px",
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: cream(0.65),
+      }}
+    >
+      {subtitle}
+    </p>
+    <h2
+      style={{
+        margin: "0 0 20px",
+        fontFamily: tenor,
+        fontWeight: 400,
+        fontSize: 24,
+        lineHeight: "32px",
+        letterSpacing: "0.1em",
+        color: CREAM,
+      }}
+    >
+      TETRIS
+    </h2>
+  </>
+);
+
+// Centre of the Share Score button in page px (layout below is fixed-height,
+// so this holds for the Game Over card)
+export const SHARE_BTN_CENTER = { x: 216, y: 512.2 };
+
+export const GameOverOverlay: React.FC<{ opacity: number; score: number; sharePress: number }> = ({
+  opacity,
+  score,
+  sharePress,
+}) => (
+  <OverlayCard opacity={opacity}>
+    <OverlayHeading subtitle="Game Over" />
+    <div style={{ marginBottom: 20 }}>
+      <div style={{ fontSize: 9, lineHeight: "13.5px", letterSpacing: "0.22em", textTransform: "uppercase", color: cream(0.65) }}>
+        Score
+      </div>
+      <div
+        style={{
+          marginTop: 2,
+          fontFamily: tenor,
+          fontSize: 24,
+          lineHeight: "32px",
+          color: CREAM,
+          fontVariantNumeric: "tabular-nums",
+        }}
+      >
+        {score}
+      </div>
+    </div>
+    <div
+      style={{
+        padding: "8px 28px",
+        borderRadius: 9999,
+        border: `1px solid ${cream(0.8)}`,
+        background: CREAM,
+        color: "#6E1423",
+        fontWeight: 500,
+        fontSize: 12,
+        lineHeight: "16px",
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        whiteSpace: "nowrap",
+      }}
+    >
+      Play Again
+    </div>
+    {/* .share-btn from the shipped game */}
+    <div
+      style={{
+        marginTop: 10,
+        padding: "7px 22px",
+        borderRadius: 9999,
+        border: `1px solid ${cream(0.6)}`,
+        background: cream(0.15 * sharePress),
+        color: CREAM,
+        fontSize: 11,
+        lineHeight: "16.5px",
+        fontWeight: 500,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        whiteSpace: "nowrap",
+        scale: String(1 - 0.05 * sharePress),
+      }}
+    >
+      Share Score
+    </div>
+  </OverlayCard>
+);
+
+export const StartOverlay: React.FC<{ frame: number }> = ({ frame }) => {
   // Tailwind: transition-all duration-200 (cubic-bezier(.4,0,.2,1)) on hover
   const hover = interpolate(frame, [HOVER_START, HOVER_START + 12], [0, 1], {
     extrapolateLeft: "clamp",
@@ -188,57 +313,15 @@ const StartOverlay: React.FC<{ frame: number }> = ({ frame }) => {
     easing: Easing.bezier(0.4, 0, 0.2, 1),
   });
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: 71,
-        top: 269.98,
-        width: 290,
-        height: 300,
-        boxSizing: "border-box",
-        padding: 24,
-        borderRadius: 12,
-        border: `1px solid ${cream(0.2)}`,
-        background: "rgba(74, 18, 25, 0.8)",
-        backdropFilter: "blur(4px)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        // .overlay-fade: opacity 0.32s ease
-        opacity: interpolate(frame, [PRESS, PRESS + OVERLAY_FADE], [1, 0], {
-          extrapolateLeft: "clamp",
-          extrapolateRight: "clamp",
-          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-        }),
-      }}
+    <OverlayCard
+      // .overlay-fade: opacity 0.32s ease
+      opacity={interpolate(frame, [PRESS, PRESS + OVERLAY_FADE], [1, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+      })}
     >
-      <p
-        style={{
-          margin: "0 0 6px",
-          fontSize: 10,
-          lineHeight: "15px",
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          color: cream(0.65),
-        }}
-      >
-        Sikku Kolam
-      </p>
-      <h2
-        style={{
-          margin: "0 0 20px",
-          fontFamily: tenor,
-          fontWeight: 400,
-          fontSize: 24,
-          lineHeight: "32px",
-          letterSpacing: "0.1em",
-          color: CREAM,
-        }}
-      >
-        TETRIS
-      </h2>
+      <OverlayHeading subtitle="Sikku Kolam" />
       <div
         style={{
           padding: "8px 28px",
@@ -260,7 +343,7 @@ const StartOverlay: React.FC<{ frame: number }> = ({ frame }) => {
         <p style={{ margin: 0 }}>Arrows / WASD to Move &amp; Rotate</p>
         <p style={{ margin: "4px 0 0" }}>Space to Drop &middot; C to Hold</p>
       </div>
-    </div>
+    </OverlayCard>
   );
 };
 
@@ -280,16 +363,16 @@ export const ClayGrain: React.FC = () => (
 );
 
 export const PageChrome: React.FC<{
-  frame: number;
   score: number;
   level: number;
   lines: number;
-}> = ({ frame, score, level, lines }) => (
+  overlay?: React.ReactNode;
+}> = ({ score, level, lines, overlay }) => (
   <ScaledPage style={{ fontFamily: jakarta, color: CREAM }}>
     <StatsBar score={score} level={level} lines={lines} />
     <MiniLabel x={HOLD_X}>Hold</MiniLabel>
     <MiniLabel x={NEXT_X}>Next</MiniLabel>
     <Header />
-    {frame < PRESS + OVERLAY_FADE ? <StartOverlay frame={frame} /> : null}
+    {overlay}
   </ScaledPage>
 );
