@@ -22,6 +22,12 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%239E3424'/%3E%3Crect x='9' y='9' width='14' height='14' rx='5' transform='rotate(45 16 16)' fill='none' stroke='%23F6EFE2' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%23F6EFE2'/%3E%3C/svg%3E">
     <!-- p5.js 1.9.0, self-hosted -->
     <script src="p5.min.js"></script>
+    <!-- Vercel Web Analytics: cookieless page views + custom events. The script
+         is served only once Web Analytics is enabled for the project. -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
     <!-- Google Fonts: Tenor Sans & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1317,6 +1323,11 @@
         const shareBtn = document.getElementById('shareBtn');
         const SHARE_LABEL = 'Share Score';
 
+        // Vercel Web Analytics custom event (queued until the insights script loads)
+        function trackEvent(name, data) {
+            if (window.va) window.va('event', { name, data });
+        }
+
         async function shareScore() {
             const url = document.querySelector('link[rel="canonical"]')?.href || location.origin;
             const text = `I scored ${score.toLocaleString()} in Sikku Kolam Tetris \u1BFD\n` +
@@ -1326,16 +1337,22 @@
             if (navigator.share) {
                 try {
                     await navigator.share({ text });
+                    trackEvent('Share', { method: 'share-sheet' });
                     return;
                 } catch (err) {
-                    if (err && err.name === 'AbortError') return; // user closed the sheet
+                    if (err && err.name === 'AbortError') { // user closed the sheet
+                        trackEvent('Share', { method: 'cancelled' });
+                        return;
+                    }
                 }
             }
             try {
                 await navigator.clipboard.writeText(text);
+                trackEvent('Share', { method: 'clipboard' });
                 shareBtn.textContent = 'Copied';
                 setTimeout(() => { shareBtn.textContent = SHARE_LABEL; }, 1600);
             } catch (err) {
+                trackEvent('Share', { method: 'x-intent' });
                 window.open('https://x.com/intent/post?text=' + encodeURIComponent(text), '_blank', 'noopener');
             }
         }
@@ -1361,6 +1378,7 @@
             lastFrameTime = performance.now();
             dropCounter = 0;
             mandalaPulse = 0.85;
+            trackEvent('Game Started');
         }
 
         function togglePause() {
@@ -1380,6 +1398,7 @@
             updateStatsUI();
             ragaAudio.gameOver();
             showOverlay('Game Over', 'TETRIS', 'Play Again', true);
+            trackEvent('Game Over', { score, lines, level });
         }
 
         function toggleGhost() {
