@@ -262,15 +262,6 @@
             text-indent: 0.16em;
         }
 
-        .splash-ant {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 22vmin;
-            height: auto;
-            overflow: visible;
-        }
-
         /* iOS one-time "Add to Home Screen" hint */
         .a2hs {
             position: fixed;
@@ -357,12 +348,11 @@
             <div class="splash-sub">Sikku Kolam</div>
             <div class="splash-name">TETRIS</div>
         </div>
-        <svg id="splashAnt" class="splash-ant" viewBox="0 0 240 200"></svg>
     </div>
     <script>
         // Starts from the iOS launch image's frame (16 faint pulli), pops the
         // middle four, draws the O-piece as two continuous lines, brings the
-        // ant in, then fades into the game. Tap to skip.
+        // title in, then fades into the game. Tap to skip.
         (function () {
             var root = document.documentElement;
             if (!root.classList.contains('show-splash')) return;
@@ -457,48 +447,7 @@
             var all = glows.concat(mains);
             var lens = all.map(function (p) { var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.style.visibility = 'hidden'; return L; });
 
-            // The ant (same drawing as in the share video), legs on a tripod gait
-            var ant = document.getElementById('splashAnt');
-            var BODY = '#3B0D15', FAR = '#5A1A22', CREAM = '#F6EFE2';
-            var LEGS = [[148, 182, 1, 1], [136, 142, 0, 1], [124, 100, 1, 1], [148, 176, 0, 0], [136, 136, 1, 0], [124, 94, 0, 0]];
-            ant.innerHTML =
-                '<g id="antBody">' +
-                LEGS.map(function (l, i) { return l[2] ? '<path id="antLeg' + i + '" fill="none" stroke="' + FAR + '" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' : ''; }).join('') +
-                '<ellipse cx="72" cy="126" rx="46" ry="35" fill="' + BODY + '" transform="rotate(-8 72 126)"/>' +
-                '<ellipse cx="58" cy="110" rx="17" ry="8" fill="' + CREAM + '" opacity="0.22" transform="rotate(-18 58 110)"/>' +
-                '<circle cx="113" cy="124" r="8" fill="' + BODY + '"/>' +
-                '<ellipse cx="137" cy="118" rx="23" ry="17" fill="' + BODY + '"/>' +
-                LEGS.map(function (l, i) { return l[2] ? '' : '<path id="antLeg' + i + '" fill="none" stroke="' + BODY + '" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('') +
-                '<path id="antAntA" fill="none" stroke="' + BODY + '" stroke-width="5" stroke-linecap="round"/>' +
-                '<path id="antAntB" fill="none" stroke="' + BODY + '" stroke-width="5" stroke-linecap="round"/>' +
-                '<circle id="antTipA" r="6.5" fill="' + BODY + '"/><circle id="antTipB" r="6.5" fill="' + BODY + '"/>' +
-                '<circle cx="180" cy="100" r="33" fill="' + BODY + '"/>' +
-                '<ellipse cx="170" cy="84" rx="10" ry="5" fill="' + CREAM + '" opacity="0.18" transform="rotate(-25 170 84)"/>' +
-                '<g id="antEye"><circle cx="191" cy="94" r="11.5" fill="' + CREAM + '"/><circle cx="194" cy="95.5" r="6.8" fill="#22070C"/><circle cx="197" cy="92" r="2.6" fill="' + CREAM + '"/></g>' +
-                '<path id="antBlink" d="M 182 95 Q 191 100 200 95" fill="none" stroke="' + CREAM + '" stroke-width="3.5" stroke-linecap="round" visibility="hidden"/>' +
-                '<ellipse cx="197" cy="115" rx="7.5" ry="4.2" fill="#FF857A" opacity="0.6"/>' +
-                '<path d="M 199 120 Q 205.5 125 212 119" fill="none" stroke="' + CREAM + '" stroke-width="3" stroke-linecap="round" opacity="0.9"/>' +
-                '<ellipse cx="80" cy="84" rx="17" ry="10" fill="' + CREAM + '" transform="rotate(-12 80 84)"/>' +
-                '</g>';
             var $ = function (id) { return document.getElementById(id); };
-            function poseAnt(phase, walking, hop, blink) {
-                var bob = walking ? -3 * Math.abs(Math.sin(phase)) : 0;
-                $('antBody').setAttribute('transform', 'translate(0 ' + (bob - hop * 46) + ')');
-                LEGS.forEach(function (l, i) {
-                    var g = l[3] ? Math.PI : 0;
-                    var footX = l[1] + (walking ? Math.sin(phase + g) * 14 : 0);
-                    var footY = 190 - (walking ? Math.max(0, Math.cos(phase + g)) * 9 : 0) - hop * 8;
-                    var kneeX = (l[0] + footX) / 2 + (footX > l[0] ? 6 : -6), kneeY = Math.min(126, footY) - 22;
-                    $('antLeg' + i).setAttribute('d', 'M ' + l[0] + ' 126 L ' + kneeX + ' ' + kneeY + ' L ' + footX + ' ' + footY);
-                });
-                var w = Math.sin(phase * 0.5) * 3;
-                $('antAntA').setAttribute('d', 'M 172 74 Q 176 44 ' + (190 + w) + ' 30');
-                $('antAntB').setAttribute('d', 'M 186 72 Q 204 46 ' + (222 - w) + ' 42');
-                $('antTipA').setAttribute('cx', 190 + w); $('antTipA').setAttribute('cy', 30);
-                $('antTipB').setAttribute('cx', 222 - w); $('antTipB').setAttribute('cy', 42);
-                $('antEye').setAttribute('visibility', blink ? 'hidden' : 'visible');
-                $('antBlink').setAttribute('visibility', blink ? 'visible' : 'hidden');
-            }
 
             var clamp = function (x) { return Math.max(0, Math.min(1, x)); };
             var easeInOut = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
@@ -527,14 +476,6 @@
                 var a = easeOut(clamp((t - 1350) / 450));
                 title.style.opacity = a * (1 - gone);
                 title.style.transform = 'translateY(' + (1 - a) * 2 + 'vmin)';
-
-                var vmin = Math.min(innerWidth, innerHeight) / 100, k = (22 * vmin) / 240;
-                var startX = -22 * vmin - 10, endX = innerWidth * 0.5 - 0.55 * 22 * vmin;
-                var w = clamp((t - 250) / 1200), x = startX + (endX - startX) * easeOut(w);
-                var hopT = clamp((t - 1550) / 300);
-                poseAnt((x / (70 * k)) * 2 * Math.PI, w > 0 && w < 1, hopT > 0 && hopT < 1 ? Math.sin(Math.PI * hopT) : 0, t > 2000 && t < 2090);
-                ant.style.transform = 'translate(' + x + 'px,' + (innerHeight * 0.8 - 190 * k) + 'px)';
-                ant.style.opacity = 1 - gone;
 
                 splash.style.opacity = 1 - clear;
                 return o >= 1;
