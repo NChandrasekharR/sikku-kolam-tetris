@@ -26,14 +26,30 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Kolam Tetris">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- iOS shows these static screens while the app loads; they match the
+         splash animation's first frame -->
+    <link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1320x2868.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1206x2622.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1260x2736.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1290x2796.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1179x2556.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1284x2778.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1170x2532.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1125x2436.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/launch-1242x2688.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash/launch-828x1792.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash/launch-750x1334.png">
     <script>
         // Launched from the home screen: run full-screen under the status bar.
         // The browser version is untouched (no class, no viewport change).
         (function () {
+            var root = document.documentElement;
             var standalone = window.navigator.standalone === true ||
                 window.matchMedia('(display-mode: standalone)').matches;
+            // Launch splash on home-screen launches; ?splash previews it anywhere
+            if (standalone || /[?&]splash\b/.test(location.search)) root.classList.add('show-splash');
             if (!standalone) return;
-            document.documentElement.classList.add('standalone');
+            root.classList.add('standalone');
             var vp = document.querySelector('meta[name="viewport"]');
             if (vp) vp.content += ', viewport-fit=cover';
         })();
@@ -195,6 +211,66 @@
             padding-right: max(10px, env(safe-area-inset-right));
         }
 
+        /* Launch splash (home-screen launches only) */
+        .splash {
+            display: none;
+        }
+
+        html.show-splash .splash {
+            display: block;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 46%, #B44332 0%, #9E3424 54%, #7A2316 100%);
+            touch-action: none;
+        }
+
+        .splash-kolam {
+            position: absolute;
+            left: 50%;
+            top: 42%;
+            width: 64vmin;
+            height: 64vmin;
+            overflow: visible;
+            transform: translate(-50%, -50%);
+        }
+
+        .splash-title {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(42% + 36vmin);
+            text-align: center;
+            color: var(--chalk-white);
+            opacity: 0;
+        }
+
+        .splash-sub {
+            font-size: 3.2vmin;
+            letter-spacing: 0.34em;
+            text-indent: 0.34em;
+            text-transform: uppercase;
+            color: rgba(246, 239, 226, 0.65);
+        }
+
+        .splash-name {
+            margin-top: 1.6vmin;
+            font-family: 'Tenor Sans', serif;
+            font-size: 9vmin;
+            letter-spacing: 0.16em;
+            text-indent: 0.16em;
+        }
+
+        .splash-ant {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 22vmin;
+            height: auto;
+            overflow: visible;
+        }
+
         /* iOS one-time "Add to Home Screen" hint */
         .a2hs {
             position: fixed;
@@ -267,6 +343,221 @@
     <style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\!container{max-width:1536px!important}.container{max-width:1536px}}.pointer-events-none{pointer-events:none}.invisible{visibility:hidden}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0}.z-10{z-index:10}.z-20{z-index:20}.z-30{z-index:30}.m-auto{margin:auto}.mb-1{margin-bottom:.25rem}.mb-1\.5{margin-bottom:.375rem}.mb-5{margin-bottom:1.25rem}.ml-2{margin-left:.5rem}.mt-0\.5{margin-top:.125rem}.mt-28{margin-top:7rem}.mt-5{margin-top:1.25rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-2{height:.5rem}.h-3\.5{height:.875rem}.h-7{height:1.75rem}.h-full{height:100%}.max-h-\[300px\]{max-height:300px}.max-h-\[84vh\]{max-height:84vh}.min-h-0{min-height:0}.w-2{width:.5rem}.w-24{width:6rem}.w-3\.5{width:.875rem}.w-7{width:1.75rem}.w-full{width:100%}.max-w-4xl{max-width:56rem}.max-w-\[290px\]{max-width:290px}.max-w-\[300px\]{max-width:300px}.max-w-\[640px\]{max-width:640px}.flex-1{flex:1 1 0%}.shrink{flex-shrink:1}.shrink-0{flex-shrink:0}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1\.5{gap:.375rem}.space-x-1\.5>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.375rem*var(--tw-space-x-reverse));margin-left:calc(.375rem*(1 - var(--tw-space-x-reverse)))}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.25rem*var(--tw-space-y-reverse))}.whitespace-nowrap{white-space:nowrap}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-\[\#F6EFE2\]\/20{border-color:hsla(39,53%,93%,.2)}.border-\[\#F6EFE2\]\/70{border-color:hsla(39,53%,93%,.7)}.border-\[\#F6EFE2\]\/80{border-color:hsla(39,53%,93%,.8)}.bg-\[\#4A1219\]\/80{background-color:rgba(74,18,25,.8)}.bg-\[\#9E1352\]{--tw-bg-opacity:1;background-color:rgb(158 19 82/var(--tw-bg-opacity,1))}.bg-\[\#F6EFE2\]{--tw-bg-opacity:1;background-color:rgb(246 239 226/var(--tw-bg-opacity,1))}.p-6{padding:1.5rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-7{padding-left:1.75rem;padding-right:1.75rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[10px\]{font-size:10px}.text-\[8px\]{font-size:8px}.text-\[9px\]{font-size:9px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-light{font-weight:300}.font-medium{font-weight:500}.uppercase{text-transform:uppercase}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.tracking-wider{letter-spacing:.05em}.tracking-widest{letter-spacing:.1em}.text-\[\#6E1423\]{--tw-text-opacity:1;color:rgb(110 20 35/var(--tw-text-opacity,1))}.text-\[\#F6EFE2\]{--tw-text-opacity:1;color:rgb(246 239 226/var(--tw-text-opacity,1))}.text-\[\#F6EFE2\]\/60{color:hsla(39,53%,93%,.6)}.text-\[\#F6EFE2\]\/65{color:hsla(39,53%,93%,.65)}.text-\[\#F6EFE2\]\/80{color:hsla(39,53%,93%,.8)}.opacity-0{opacity:0}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-\[4px\]{--tw-backdrop-blur:blur(4px)}.backdrop-blur-\[4px\],.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.duration-200{transition-duration:.2s}.hover\:bg-transparent:hover{background-color:transparent}.hover\:text-\[\#F6EFE2\]:hover{--tw-text-opacity:1;color:rgb(246 239 226/var(--tw-text-opacity,1))}@media (min-width:640px){.sm\:inline{display:inline}.sm\:flex{display:flex}.sm\:hidden{display:none}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:py-4{padding-top:1rem;padding-bottom:1rem}.sm\:text-2xl{font-size:1.5rem;line-height:2rem}.sm\:text-3xl{font-size:1.875rem;line-height:2.25rem}}</style>
 </head>
 <body class="bg-terracotta py-2 px-2.5 sm:py-4 sm:px-6 relative">
+
+    <!-- Launch splash: the kolam draws itself (home-screen launches, or ?splash) -->
+    <div id="splash" class="splash" aria-hidden="true">
+        <svg class="splash-kolam" viewBox="0 0 400 400">
+            <g id="splashDots"></g>
+            <g id="splashKolam">
+                <g id="splashLines" fill="none" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="splashPulli"></g>
+            </g>
+        </svg>
+        <div id="splashTitle" class="splash-title">
+            <div class="splash-sub">Sikku Kolam</div>
+            <div class="splash-name">TETRIS</div>
+        </div>
+        <svg id="splashAnt" class="splash-ant" viewBox="0 0 240 200"></svg>
+    </div>
+    <script>
+        // Starts from the iOS launch image's frame (16 faint pulli), pops the
+        // middle four, draws the O-piece as two continuous lines, brings the
+        // ant in, then fades into the game. Tap to skip.
+        (function () {
+            var root = document.documentElement;
+            if (!root.classList.contains('show-splash')) return;
+            var NS = 'http://www.w3.org/2000/svg';
+            var splash = document.getElementById('splash');
+            var C = 100, R = C / 2, r0 = R * Math.SQRT1_2, STROKE = C * 0.115;
+
+            function el(tag, attrs, parent) {
+                var n = document.createElementNS(NS, tag);
+                for (var k in attrs) n.setAttribute(k, attrs[k]);
+                parent.appendChild(n);
+                return n;
+            }
+
+            // 4x4 pulli grid; the middle four become the O-piece's dots
+            var pulli = [];
+            for (var r = 0; r < 4; r++) {
+                for (var c = 0; c < 4; c++) {
+                    var inner = r > 0 && r < 3 && c > 0 && c < 3;
+                    var dot = el('circle', { cx: 50 + C * c, cy: 50 + C * r, r: 5, fill: 'rgba(246,239,226,0.22)' },
+                        document.getElementById(inner ? 'splashPulli' : 'splashDots'));
+                    if (inner) pulli.push(dot);
+                }
+            }
+
+            // The O-piece weave as continuous lines, same geometry as the game:
+            // free sides curve round the dot, shared sides cross at 45 degrees
+            var A = { NE: -Math.PI / 4, SE: Math.PI / 4, SW: 3 * Math.PI / 4, NW: 5 * Math.PI / 4 };
+            var QUADS = [['N', 'NW', 'NE', -3 * Math.PI / 4], ['E', 'NE', 'SE', -Math.PI / 4],
+                ['S', 'SE', 'SW', Math.PI / 4], ['W', 'SW', 'NW', 3 * Math.PI / 4]];
+            function centre(r, c) { return [C * (c + 1.5), C * (r + 1.5)]; }
+            function tangent(r, c, k) { var o = centre(r, c); return [o[0] + r0 * Math.cos(A[k]), o[1] + r0 * Math.sin(A[k])]; }
+            var edges = [], at = {};
+            function addEdge(a, b, pts) {
+                var e = { a: a, b: b, pts: pts };
+                edges.push(e);
+                (at[a] = at[a] || []).push(e);
+                (at[b] = at[b] || []).push(e);
+            }
+            for (var rr = 0; rr < 2; rr++) {
+                for (var cc = 0; cc < 2; cc++) {
+                    var conn = { N: rr === 1, S: rr === 0, W: cc === 1, E: cc === 0 };
+                    var o = centre(rr, cc);
+                    QUADS.forEach(function (q) {
+                        var key = function (k, r2, c2) { return r2 + ',' + c2 + ',' + k; };
+                        if (!conn[q[0]]) {
+                            var pts = [];
+                            for (var i = 0; i <= 14; i++) {
+                                var th = q[3] + (i / 14) * (Math.PI / 2);
+                                var sn = Math.sin(2 * (th - q[3]));
+                                var rad = r0 + R * 0.055 * sn * sn;
+                                pts.push([o[0] + rad * Math.cos(th), o[1] + rad * Math.sin(th)]);
+                            }
+                            addEdge(key(q[1], rr, cc), key(q[2], rr, cc), pts);
+                        } else if (q[0] === 'E') {
+                            var mE = [o[0] + R, o[1]];
+                            addEdge(key('NE', rr, cc), key('SW', rr, cc + 1), [tangent(rr, cc, 'NE'), mE, tangent(rr, cc + 1, 'SW')]);
+                            addEdge(key('SE', rr, cc), key('NW', rr, cc + 1), [tangent(rr, cc, 'SE'), mE, tangent(rr, cc + 1, 'NW')]);
+                        } else if (q[0] === 'S') {
+                            var mS = [o[0], o[1] + R];
+                            addEdge(key('SE', rr, cc), key('NW', rr + 1, cc), [tangent(rr, cc, 'SE'), mS, tangent(rr + 1, cc, 'NW')]);
+                            addEdge(key('SW', rr, cc), key('NE', rr + 1, cc), [tangent(rr, cc, 'SW'), mS, tangent(rr + 1, cc, 'NE')]);
+                        }
+                    });
+                }
+            }
+            // Walk each closed strand, starting on the top-left cell's free top arc
+            var used = new Set(), strands = [];
+            edges.forEach(function (start) {
+                if (used.has(start)) return;
+                var pts = start.pts.slice(), node = start.b, e = start;
+                used.add(e);
+                for (;;) {
+                    var next = at[node].filter(function (x) { return x !== e; })[0];
+                    if (next === start) break;
+                    used.add(next);
+                    var seg = next.a === node ? next.pts : next.pts.slice().reverse();
+                    pts = pts.concat(seg.slice(1));
+                    node = next.a === node ? next.b : next.a;
+                    e = next;
+                }
+                strands.push(pts);
+            });
+            var lines = document.getElementById('splashLines'), glows = [], mains = [];
+            strands.forEach(function (pts) {
+                var d = 'M' + pts.map(function (p) { return p[0].toFixed(2) + ' ' + p[1].toFixed(2); }).join(' L');
+                glows.push(el('path', { d: d, stroke: 'rgba(242,193,78,0.28)', 'stroke-width': STROKE * 1.95 }, lines));
+            });
+            strands.forEach(function (pts, i) {
+                mains.push(el('path', { d: glows[i].getAttribute('d'), stroke: '#F6EFE2', 'stroke-width': STROKE }, lines));
+            });
+            var all = glows.concat(mains);
+            var lens = all.map(function (p) { var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.style.visibility = 'hidden'; return L; });
+
+            // The ant (same drawing as in the share video), legs on a tripod gait
+            var ant = document.getElementById('splashAnt');
+            var BODY = '#3B0D15', FAR = '#5A1A22', CREAM = '#F6EFE2';
+            var LEGS = [[148, 182, 1, 1], [136, 142, 0, 1], [124, 100, 1, 1], [148, 176, 0, 0], [136, 136, 1, 0], [124, 94, 0, 0]];
+            ant.innerHTML =
+                '<g id="antBody">' +
+                LEGS.map(function (l, i) { return l[2] ? '<path id="antLeg' + i + '" fill="none" stroke="' + FAR + '" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' : ''; }).join('') +
+                '<ellipse cx="72" cy="126" rx="46" ry="35" fill="' + BODY + '" transform="rotate(-8 72 126)"/>' +
+                '<ellipse cx="58" cy="110" rx="17" ry="8" fill="' + CREAM + '" opacity="0.22" transform="rotate(-18 58 110)"/>' +
+                '<circle cx="113" cy="124" r="8" fill="' + BODY + '"/>' +
+                '<ellipse cx="137" cy="118" rx="23" ry="17" fill="' + BODY + '"/>' +
+                LEGS.map(function (l, i) { return l[2] ? '' : '<path id="antLeg' + i + '" fill="none" stroke="' + BODY + '" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('') +
+                '<path id="antAntA" fill="none" stroke="' + BODY + '" stroke-width="5" stroke-linecap="round"/>' +
+                '<path id="antAntB" fill="none" stroke="' + BODY + '" stroke-width="5" stroke-linecap="round"/>' +
+                '<circle id="antTipA" r="6.5" fill="' + BODY + '"/><circle id="antTipB" r="6.5" fill="' + BODY + '"/>' +
+                '<circle cx="180" cy="100" r="33" fill="' + BODY + '"/>' +
+                '<ellipse cx="170" cy="84" rx="10" ry="5" fill="' + CREAM + '" opacity="0.18" transform="rotate(-25 170 84)"/>' +
+                '<g id="antEye"><circle cx="191" cy="94" r="11.5" fill="' + CREAM + '"/><circle cx="194" cy="95.5" r="6.8" fill="#22070C"/><circle cx="197" cy="92" r="2.6" fill="' + CREAM + '"/></g>' +
+                '<path id="antBlink" d="M 182 95 Q 191 100 200 95" fill="none" stroke="' + CREAM + '" stroke-width="3.5" stroke-linecap="round" visibility="hidden"/>' +
+                '<ellipse cx="197" cy="115" rx="7.5" ry="4.2" fill="#FF857A" opacity="0.6"/>' +
+                '<path d="M 199 120 Q 205.5 125 212 119" fill="none" stroke="' + CREAM + '" stroke-width="3" stroke-linecap="round" opacity="0.9"/>' +
+                '<ellipse cx="80" cy="84" rx="17" ry="10" fill="' + CREAM + '" transform="rotate(-12 80 84)"/>' +
+                '</g>';
+            var $ = function (id) { return document.getElementById(id); };
+            function poseAnt(phase, walking, hop, blink) {
+                var bob = walking ? -3 * Math.abs(Math.sin(phase)) : 0;
+                $('antBody').setAttribute('transform', 'translate(0 ' + (bob - hop * 46) + ')');
+                LEGS.forEach(function (l, i) {
+                    var g = l[3] ? Math.PI : 0;
+                    var footX = l[1] + (walking ? Math.sin(phase + g) * 14 : 0);
+                    var footY = 190 - (walking ? Math.max(0, Math.cos(phase + g)) * 9 : 0) - hop * 8;
+                    var kneeX = (l[0] + footX) / 2 + (footX > l[0] ? 6 : -6), kneeY = Math.min(126, footY) - 22;
+                    $('antLeg' + i).setAttribute('d', 'M ' + l[0] + ' 126 L ' + kneeX + ' ' + kneeY + ' L ' + footX + ' ' + footY);
+                });
+                var w = Math.sin(phase * 0.5) * 3;
+                $('antAntA').setAttribute('d', 'M 172 74 Q 176 44 ' + (190 + w) + ' 30');
+                $('antAntB').setAttribute('d', 'M 186 72 Q 204 46 ' + (222 - w) + ' 42');
+                $('antTipA').setAttribute('cx', 190 + w); $('antTipA').setAttribute('cy', 30);
+                $('antTipB').setAttribute('cx', 222 - w); $('antTipB').setAttribute('cy', 42);
+                $('antEye').setAttribute('visibility', blink ? 'hidden' : 'visible');
+                $('antBlink').setAttribute('visibility', blink ? 'visible' : 'hidden');
+            }
+
+            var clamp = function (x) { return Math.max(0, Math.min(1, x)); };
+            var easeInOut = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+            var easeOut = function (x) { return 1 - Math.pow(1 - x, 3); };
+            var easeOutBack = function (x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var exitAt = reduce ? 800 : 2300, exitDur = 500, t0 = null, title = $('splashTitle'), kolam = $('splashKolam');
+            var art = splash.querySelector('.splash-kolam');
+
+            function render(t) {
+                if (reduce) t = Math.max(t, 2000);
+                var p = clamp((t - 120) / 400), s = p >= 1 ? 1 : Math.max(0, easeOutBack(p));
+                pulli.forEach(function (d) {
+                    d.setAttribute('r', 5 + 6 * s);
+                    d.setAttribute('fill', 'rgba(246,239,226,' + (0.22 + 0.78 * Math.min(1, p * 1.5)) + ')');
+                });
+                var q = easeInOut(clamp((t - 380) / 1120));
+                // a zero-length dash still paints its round cap, so hide until drawing starts
+                all.forEach(function (path, i) { path.style.strokeDashoffset = lens[i] * (1 - q); path.style.visibility = q > 0 ? 'visible' : 'hidden'; });
+                // Exit in two beats: the drawing lifts away first, then the
+                // terracotta clears to the game (so the two titles never overlap)
+                var o = clamp((t - exitAt) / exitDur), gone = clamp(o / 0.45), clear = clamp((o - 0.45) / 0.55);
+                var pulse = 1 + 0.035 * Math.sin(Math.PI * clamp((t - 1500) / 320)) + (reduce ? 0 : 0.06 * gone);
+                kolam.setAttribute('transform', 'translate(200 200) scale(' + pulse + ') translate(-200 -200)');
+                art.style.opacity = 1 - gone;
+                var a = easeOut(clamp((t - 1350) / 450));
+                title.style.opacity = a * (1 - gone);
+                title.style.transform = 'translateY(' + (1 - a) * 2 + 'vmin)';
+
+                var vmin = Math.min(innerWidth, innerHeight) / 100, k = (22 * vmin) / 240;
+                var startX = -22 * vmin - 10, endX = innerWidth * 0.5 - 0.55 * 22 * vmin;
+                var w = clamp((t - 250) / 1200), x = startX + (endX - startX) * easeOut(w);
+                var hopT = clamp((t - 1550) / 300);
+                poseAnt((x / (70 * k)) * 2 * Math.PI, w > 0 && w < 1, hopT > 0 && hopT < 1 ? Math.sin(Math.PI * hopT) : 0, t > 2000 && t < 2090);
+                ant.style.transform = 'translate(' + x + 'px,' + (innerHeight * 0.8 - 190 * k) + 'px)';
+                ant.style.opacity = 1 - gone;
+
+                splash.style.opacity = 1 - clear;
+                return o >= 1;
+            }
+
+            function frame(now) {
+                if (t0 === null) t0 = now;
+                if (render(now - t0)) {
+                    splash.remove();
+                    root.classList.remove('show-splash');
+                    return;
+                }
+                requestAnimationFrame(frame);
+            }
+            render(0);
+            requestAnimationFrame(frame);
+            splash.addEventListener('pointerdown', function () {
+                if (t0 === null) return;
+                var t = performance.now() - t0;
+                if (t < exitAt) { exitAt = t; exitDur = 250; }
+            });
+        })();
+    </script>
 
     <!-- Subtle earthen grain texture -->
     <div class="clay-texture"></div>
