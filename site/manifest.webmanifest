@@ -1,0 +1,16 @@
+{
+  "name": "Sikku Kolam Tetris",
+  "short_name": "Kolam Tetris",
+  "description": "A Tetris where every block is a sikku kolam loop. Stack the pieces and they weave into one rice-flour pattern.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#9E3424",
+  "theme_color": "#9E3424",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

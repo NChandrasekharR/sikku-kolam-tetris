@@ -20,6 +20,24 @@
     <meta name="twitter:description" content="Every block is a kolam loop. Stack them and they weave into one pattern.">
     <meta name="twitter:image" content="https://kolam-tetris.vercel.app/og-card.png">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%239E3424'/%3E%3Crect x='9' y='9' width='14' height='14' rx='5' transform='rotate(45 16 16)' fill='none' stroke='%23F6EFE2' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%23F6EFE2'/%3E%3C/svg%3E">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Kolam Tetris">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script>
+        // Launched from the home screen: run full-screen under the status bar.
+        // The browser version is untouched (no class, no viewport change).
+        (function () {
+            var standalone = window.navigator.standalone === true ||
+                window.matchMedia('(display-mode: standalone)').matches;
+            if (!standalone) return;
+            document.documentElement.classList.add('standalone');
+            var vp = document.querySelector('meta[name="viewport"]');
+            if (vp) vp.content += ', viewport-fit=cover';
+        })();
+    </script>
     <!-- p5.js 1.9.0, self-hosted -->
     <script src="p5.min.js"></script>
     <!-- Vercel Web Analytics: cookieless page views + custom events. The script
@@ -167,6 +185,83 @@
         .share-btn:hover {
             background: rgba(246, 239, 226, 0.15);
         }
+
+        /* Home-screen launch: the page runs under the status bar and home
+           indicator, so pad by the safe areas */
+        html.standalone body {
+            padding-top: max(8px, env(safe-area-inset-top));
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+            padding-left: max(10px, env(safe-area-inset-left));
+            padding-right: max(10px, env(safe-area-inset-right));
+        }
+
+        /* iOS one-time "Add to Home Screen" hint */
+        .a2hs {
+            position: fixed;
+            left: 50%;
+            bottom: calc(14px + env(safe-area-inset-bottom));
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: min(340px, calc(100vw - 24px));
+            padding: 12px 8px 12px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(246, 239, 226, 0.25);
+            background: rgba(46, 10, 16, 0.92);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 10px 30px rgba(20, 4, 8, 0.4);
+            color: var(--chalk-white);
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, 12px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+
+        .a2hs.a2hs-show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, 0);
+        }
+
+        .a2hs-icon {
+            flex: none;
+            width: 36px;
+            height: 36px;
+            padding: 7px;
+            border-radius: 10px;
+            background: rgba(246, 239, 226, 0.1);
+        }
+
+        .a2hs-title {
+            font-family: 'Tenor Sans', serif;
+            font-size: 15px;
+            letter-spacing: 0.04em;
+        }
+
+        .a2hs-note {
+            margin-top: 2px;
+            font-size: 11px;
+            line-height: 1.4;
+            color: rgba(246, 239, 226, 0.75);
+            text-wrap: balance;
+        }
+
+        .a2hs-close {
+            flex: none;
+            align-self: flex-start;
+            width: 30px;
+            height: 30px;
+            margin-left: auto;
+            border: 0;
+            background: none;
+            color: rgba(246, 239, 226, 0.7);
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
     </style>
     <!-- Tailwind CSS v3.4.17, compiled for exactly the classes this page uses -->
     <style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\!container{max-width:1536px!important}.container{max-width:1536px}}.pointer-events-none{pointer-events:none}.invisible{visibility:hidden}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0}.z-10{z-index:10}.z-20{z-index:20}.z-30{z-index:30}.m-auto{margin:auto}.mb-1{margin-bottom:.25rem}.mb-1\.5{margin-bottom:.375rem}.mb-5{margin-bottom:1.25rem}.ml-2{margin-left:.5rem}.mt-0\.5{margin-top:.125rem}.mt-28{margin-top:7rem}.mt-5{margin-top:1.25rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-2{height:.5rem}.h-3\.5{height:.875rem}.h-7{height:1.75rem}.h-full{height:100%}.max-h-\[300px\]{max-height:300px}.max-h-\[84vh\]{max-height:84vh}.min-h-0{min-height:0}.w-2{width:.5rem}.w-24{width:6rem}.w-3\.5{width:.875rem}.w-7{width:1.75rem}.w-full{width:100%}.max-w-4xl{max-width:56rem}.max-w-\[290px\]{max-width:290px}.max-w-\[300px\]{max-width:300px}.max-w-\[640px\]{max-width:640px}.flex-1{flex:1 1 0%}.shrink{flex-shrink:1}.shrink-0{flex-shrink:0}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1\.5{gap:.375rem}.space-x-1\.5>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.375rem*var(--tw-space-x-reverse));margin-left:calc(.375rem*(1 - var(--tw-space-x-reverse)))}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.25rem*var(--tw-space-y-reverse))}.whitespace-nowrap{white-space:nowrap}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-\[\#F6EFE2\]\/20{border-color:hsla(39,53%,93%,.2)}.border-\[\#F6EFE2\]\/70{border-color:hsla(39,53%,93%,.7)}.border-\[\#F6EFE2\]\/80{border-color:hsla(39,53%,93%,.8)}.bg-\[\#4A1219\]\/80{background-color:rgba(74,18,25,.8)}.bg-\[\#9E1352\]{--tw-bg-opacity:1;background-color:rgb(158 19 82/var(--tw-bg-opacity,1))}.bg-\[\#F6EFE2\]{--tw-bg-opacity:1;background-color:rgb(246 239 226/var(--tw-bg-opacity,1))}.p-6{padding:1.5rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-7{padding-left:1.75rem;padding-right:1.75rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[10px\]{font-size:10px}.text-\[8px\]{font-size:8px}.text-\[9px\]{font-size:9px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-light{font-weight:300}.font-medium{font-weight:500}.uppercase{text-transform:uppercase}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.tracking-wider{letter-spacing:.05em}.tracking-widest{letter-spacing:.1em}.text-\[\#6E1423\]{--tw-text-opacity:1;color:rgb(110 20 35/var(--tw-text-opacity,1))}.text-\[\#F6EFE2\]{--tw-text-opacity:1;color:rgb(246 239 226/var(--tw-text-opacity,1))}.text-\[\#F6EFE2\]\/60{color:hsla(39,53%,93%,.6)}.text-\[\#F6EFE2\]\/65{color:hsla(39,53%,93%,.65)}.text-\[\#F6EFE2\]\/80{color:hsla(39,53%,93%,.8)}.opacity-0{opacity:0}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-\[4px\]{--tw-backdrop-blur:blur(4px)}.backdrop-blur-\[4px\],.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.duration-200{transition-duration:.2s}.hover\:bg-transparent:hover{background-color:transparent}.hover\:text-\[\#F6EFE2\]:hover{--tw-text-opacity:1;color:rgb(246 239 226/var(--tw-text-opacity,1))}@media (min-width:640px){.sm\:inline{display:inline}.sm\:flex{display:flex}.sm\:hidden{display:none}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:py-4{padding-top:1rem;padding-bottom:1rem}.sm\:text-2xl{font-size:1.5rem;line-height:2rem}.sm\:text-3xl{font-size:1.875rem;line-height:2.25rem}}</style>
@@ -298,6 +393,19 @@
 
         </div>
     </main>
+
+    <!-- iOS: one-time "Add to Home Screen" hint (iOS has no install prompt) -->
+    <div id="a2hsHint" class="a2hs" role="dialog" aria-label="Add to Home Screen">
+        <svg class="a2hs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3.5v11M8 7.5l4-4 4 4"/>
+            <path d="M8.5 10.5H6.5a1.5 1.5 0 0 0-1.5 1.5v7a1.5 1.5 0 0 0 1.5 1.5h11a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5h-2"/>
+        </svg>
+        <div>
+            <div class="a2hs-title">Play it like an app</div>
+            <div class="a2hs-note">In Safari, tap Share, then Add to Home Screen</div>
+        </div>
+        <button id="a2hsClose" class="a2hs-close" type="button" aria-label="Dismiss">&times;</button>
+    </div>
 
     <script>
         /**
@@ -1328,6 +1436,36 @@
             if (window.va) window.va('event', { name, data });
         }
 
+        // --- HOME SCREEN ---
+        // iOS has no install prompt, so after the first game over on an
+        // iPhone/iPad browser we point at Share -> Add to Home Screen, once.
+        const A2HS_KEY = 'sikku_kolam_a2hs_hint';
+        const a2hsHint = document.getElementById('a2hsHint');
+        const isStandalone = window.navigator.standalone === true ||
+            window.matchMedia('(display-mode: standalone)').matches;
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        if (isStandalone) trackEvent('Home Screen Launch');
+
+        function maybeShowA2hsHint() {
+            if (!isIOS || isStandalone) return;
+            try {
+                if (localStorage.getItem(A2HS_KEY)) return;
+                localStorage.setItem(A2HS_KEY, 'shown');
+            } catch (e) {
+                return; // can't remember it, so don't risk showing it every game
+            }
+            a2hsHint.classList.add('a2hs-show');
+            trackEvent('Home Screen Hint', { action: 'shown' });
+        }
+
+        function hideA2hsHint(dismissed) {
+            if (!a2hsHint.classList.contains('a2hs-show')) return;
+            a2hsHint.classList.remove('a2hs-show');
+            if (dismissed) trackEvent('Home Screen Hint', { action: 'dismissed' });
+        }
+
         async function shareScore() {
             const url = document.querySelector('link[rel="canonical"]')?.href || location.origin;
             const text = `I scored ${score.toLocaleString()} in Sikku Kolam Tetris \u1BFD\n` +
@@ -1379,6 +1517,7 @@
             dropCounter = 0;
             mandalaPulse = 0.85;
             trackEvent('Game Started');
+            hideA2hsHint(false);
         }
 
         function togglePause() {
@@ -1399,6 +1538,7 @@
             ragaAudio.gameOver();
             showOverlay('Game Over', 'TETRIS', 'Play Again', true);
             trackEvent('Game Over', { score, lines, level });
+            maybeShowA2hsHint();
         }
 
         function toggleGhost() {
@@ -1607,6 +1747,7 @@
         document.getElementById('bgToggle').addEventListener('click', toggleBgMode);
         document.getElementById('soundToggle').addEventListener('click', toggleSound);
         shareBtn.addEventListener('click', shareScore);
+        document.getElementById('a2hsClose').addEventListener('click', () => hideA2hsHint(true));
 
         // Don't let the game run on while the tab is in the background
         document.addEventListener('visibilitychange', () => {
